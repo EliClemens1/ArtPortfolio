@@ -1,0 +1,38 @@
+#borderOutline {
+    border: 2px solid black;
+    padding: 10px;
+    margin-left: 15px;
+
+
+}
+
+#titleformat {
+    text-align: center !important;
+    width: 300px;
+    height: 100px;
+    margin: 20px auto;
+}
+
+
+.side-by-side-grid {
+  display: grid;
+  grid-template-columns: .7fr 1fr; /* two equal columns side by side */
+  column-gap: 20px;               /* space between columns */
+  max-width: auto;
+  margin: 0 auto;
+}
+
+
+    .grid-container2 {
+      display: grid;
+      grid-template-columns: 0.4fr 1fr; 
+      gap: 20px;                     
+      max-width: auto;              
+      padding: 20px;
+    }
+
+.border-box {
+    border: 2px solid black;
+    padding: 10px;
+    text-align: center;
+}
