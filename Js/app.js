@@ -1,16 +1,28 @@
-//
+import MainPage from "./components/main_page.js"
+import DetailsPage from "./components/details_page.js"
+
 const { createApp } = Vue
+
 createApp({
-    //Components property registers compontnts so they can be used in the HTML
+
     components: {
-        //This line maps the HTML tag <main-page> to the MainPage component defined in js/components/main_page.js
-        //Vue will replace <main-page> with the template defined in MainPage when loading the app
-        'main-page' : MainPage,
-        // 'details-page' : DetailsPage
+        'main-page': MainPage,
+        'details-page': DetailsPage
     },
+
     data() {
         return {
-            message: "Artist Portfolio"
+            currentPage: "main",
+            selectedArtwork: null
+        }
+    },
+    methods: {
+        openDetails(art) {
+            //art is the current selectedArtwork object that was passed from the main page when a user clicks an artwork card. 
+            // We set that object to selectedArtwork and change the page to details, which will show the details page and pass the selected artwork to it.
+            this.selectedArtwork = art
+            this.currentPage = "details"
         }
     }
+
 }).mount("#app")

@@ -10,8 +10,8 @@ export default {
       <div class="side-by-side-grid">
         <!-- Left column -->
         <div class="left-column">
-          <img src="https://via.placeholder.com/200x150" alt="Placeholder Image">
-          <p class="placeholder-text">Text under the image</p>
+          <img :src="artwork.image" alt="Placeholder Image">
+          <p class="placeholder-text">{{ artwork.title }}</p>
         </div>
 
         <!-- Right column -->
@@ -38,5 +38,7 @@ export default {
         </div>
       </div>
     </div>
-  `
+  `,
+  props: ["artwork"],
+
 }

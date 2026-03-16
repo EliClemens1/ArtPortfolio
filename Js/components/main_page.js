@@ -1,8 +1,8 @@
-const MainPage = {
+export default {
+
     data() {
         return {
 
-            // Array containing artwork objects
             artworks: [
                 {
                     title: "Ocean Foam",
@@ -19,7 +19,7 @@ const MainPage = {
                     medium: "Acrylic",
                     dimensions: "18 x 24 in",
                     image: "placeholderImages/Frustrated.jpg"
-                },       
+                },
                 {
                     title: "Graduated!",
                     artist: "Rick Clemens",
@@ -27,32 +27,48 @@ const MainPage = {
                     medium: "Crayon",
                     dimensions: "18 x 24 in",
                     image: "placeholderImages/CoolCat.jpg"
-                },
+                }
             ]
         }
+    },
+
+    methods: {
+//This method runs when a user clicks an artwork card. the card click is defined in the template with @click="selectArtwork(art)
+// "art" is the artwork object from the v-for loop in the template. We pass that object"
+//emit an event called "open-details" and pass the artwork object as data. The parent component (app.js) listens for this event and runs the openDetails method, which sets the selected artwork and changes the page to details.
+//open-details is located in app.js
+        selectArtwork(art) {
+
+            //tell the parent which artwork was selected from v-for(art in artworks) array and emit the signal to open the details page
+            this.$emit("open-details", art)
+
+        }
+
     },
     template: `
     <div class="main-page">
 
         <h2>Main Page</h2>
 
-        <!-- Search bar, upload button, and filter button -->
         <div class="actions">
             <input type="text" placeholder="Search artwork...">
             <button>Upload</button>
             <button>Filter</button>
         </div>
 
-        <!-- List of artworks will go here -->
         <div class="artwork-list">
-        
-        <!-- V-For to loop through 'artworks' array and display them -->
-            <div class="art-card" v-for="art in artworks" :key="art.title">
+
+            <div class="art-card"
+                 v-for="art in artworks"
+                 :key="art.title"
+
+    <!-- OnClick event triggert selectArtwork method to run. From there, open-details is called.-->
+                 @click="selectArtwork(art)">
+
                 <div class="art-image">
                     <img :src="art.image" alt="Artwork Image">
                 </div>
 
-                <!-- Artwork information -->
                 <div class="art-info">
                     <h3>{{ art.title }}</h3>
                     <p>{{ art.artist }}</p>
@@ -60,8 +76,11 @@ const MainPage = {
                     <p>{{ art.medium }}</p>
                     <p>{{ art.dimensions }}</p>
                 </div>
+
             </div>
-            
+
         </div>
-    </div>`
+
+    </div>
+    `
 }
