@@ -3,7 +3,8 @@ export default {
     <div>
 
 
-    
+      <button @click="$emit('back')">Back to Gallery</button>
+
       <h1 id="titleformat">Details</h1>
 
       <!-- Grid container: left and right columns -->
@@ -39,6 +40,8 @@ export default {
       </div>
     </div>
   `,
+  //artwork is bound to selectedArtwork in index.html. When a user clicks an artwork card on the main page, that artwork object is passed to app.js and set as selectedArtwork. 
+  // Then when the details page is shown, it receives that selectedArtwork as a prop called "artwork". So we can access the properties of the selected artwork using "artwork.propertyName" in this component.
   props: ["artwork"],
 
 }

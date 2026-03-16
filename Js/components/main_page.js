@@ -62,7 +62,6 @@ export default {
                  v-for="art in artworks"
                  :key="art.title"
 
-    <!-- OnClick event triggert selectArtwork method to run. From there, open-details is called.-->
                  @click="selectArtwork(art)">
 
                 <div class="art-image">

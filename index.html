@@ -13,9 +13,12 @@
 
 <div id="app">
 
+    <login-page v-if="currentPage === 'login'" @login="loginSuccess"></login-page>
+
     <main-page v-if="currentPage === 'main'" @open-details="openDetails"></main-page>
 
-    <details-page v-if="currentPage === 'details'" :artwork="selectedArtwork"></details-page>
+    <details-page v-if="currentPage === 'details'" :artwork="selectedArtwork" @back="currentPage = 'main'"></details-page>
+
 </div>
 
 <!-- Load Vue -->

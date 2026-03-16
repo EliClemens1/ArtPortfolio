@@ -1,22 +1,27 @@
 import MainPage from "./components/main_page.js"
 import DetailsPage from "./components/details_page.js"
+import LoginPage from "./components/login_page.js"
 
 const { createApp } = Vue
 
 createApp({
 
     components: {
+        'login-page': LoginPage,
         'main-page': MainPage,
         'details-page': DetailsPage
     },
 
     data() {
         return {
-            currentPage: "main",
+            currentPage: "login",
             selectedArtwork: null
         }
     },
     methods: {
+        loginSuccess(){
+            this.currentPage = "main"
+        },
         openDetails(art) {
             //art is the current selectedArtwork object that was passed from the main page when a user clicks an artwork card. 
             // We set that object to selectedArtwork and change the page to details, which will show the details page and pass the selected artwork to it.
