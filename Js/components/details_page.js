@@ -3,8 +3,7 @@ export default {
     <div>
 
 
-      <button @click="$emit('back')">Back to Gallery</button>
-
+    
       <h1 id="titleformat">Details</h1>
 
       <!-- Grid container: left and right columns -->
@@ -16,9 +15,20 @@ export default {
         </div>
 
         <!-- Right column -->
-        <div class="right-column">
-          <p class="border-box">Placeholder 1</p>
-          <p class="border-box">Placeholder 2</p>
+        <div class="right-column ">
+          <div class="border-box" id="divesizeincrease">
+          <button class="image-button">
+          <img src="https://via.placeholder.com/50" alt="Image 1">
+          </button>
+          <button class="image-button">
+          <img src="https://via.placeholder.com/50" alt="Image 2">
+          </button>
+          <button class="image-button">
+          <img src="https://via.placeholder.com/50" alt="Image 3">
+          </button>
+
+          </div>
+          <p class="border-box" id="biggerdescription">Placeholder 2</p>
           <p class="border-box">Placeholder 3</p>
           <p class="border-box">Placeholder 4</p>
         </div>
@@ -27,7 +37,14 @@ export default {
       <!-- Second Grid -->
       <div class="grid-container2">
         <!-- Empty first column -->
-        <div></div>
+        <div class="content-column">
+          <p class="paddingforparts">Placeholder 4</p>
+          <p class="paddingforparts">Placeholder 4</p>
+          <p class="paddingforparts">Placeholder 4</p>
+          <p class="paddingforparts">Placeholder 4</p>
+          <p class="paddingforparts">Placeholder 4</p>
+
+          </div>
 
         <!-- Second column -->
         <div class="content-column">
