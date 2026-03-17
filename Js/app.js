@@ -28,7 +28,10 @@ createApp({
             // We set that object to selectedArtwork and change the page to details, which will show the details page and pass the selected artwork to it.
             this.selectedArtwork = art
             this.currentPage = "details"
-        }
+        },
+        returnToMain(){
+            this.currentPage = "main"
+        },
     }
 
 }).mount("#app")

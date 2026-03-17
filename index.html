@@ -6,6 +6,7 @@
 <title>Artist Portfolio</title>
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="details_styles.css">
 
 </head>
 
@@ -18,6 +19,9 @@
     <main-page v-if="currentPage === 'main'" @open-details="openDetails"></main-page>
 
     <details-page v-if="currentPage === 'details'" :artwork="selectedArtwork" @back="currentPage = 'main'"></details-page>
+
+
+
 
 </div>
 
