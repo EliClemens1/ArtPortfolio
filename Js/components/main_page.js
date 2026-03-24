@@ -33,15 +33,15 @@ export default {
     },
 
     methods: {
+
 //This method runs when a user clicks an artwork card. the card click is defined in the template with @click="selectArtwork(art)
 // "art" is the artwork object from the v-for loop in the template. We pass that object"
-//emit an event called "open-details" and pass the artwork object as data. The parent component (app.js) listens for this event and runs the openDetails method, which sets the selected artwork and changes the page to details.
+//emit an event called "open-details" and pass the artwork object as data. The parent component (app.js) listens for this event and runs the openDetails method, 
+// which stores the selected artwork and changes the currentPage state to details.
 //open-details is located in app.js
         selectArtwork(art) {
-
             //tell the parent which artwork was selected from v-for(art in artworks) array and emit the signal to open the details page
             this.$emit("open-details", art)
-
         }
 
     },
@@ -61,7 +61,6 @@ export default {
             <div class="art-card"
                  v-for="art in artworks"
                  :key="art.title"
-
                  @click="selectArtwork(art)">
 
                 <div class="art-image">
@@ -71,9 +70,7 @@ export default {
                 <div class="art-info">
                     <h3>{{ art.title }}</h3>
                     <p>{{ art.artist }}</p>
-                    <p>{{ art.date }}</p>
-                    <p>{{ art.medium }}</p>
-                    <p>{{ art.dimensions }}</p>
+
                 </div>
 
             </div>

@@ -2,7 +2,10 @@ export default {
   template: `
     <div>
 
-
+<div class="button-row">
+    <button class="buttonformat" @click="$emit('back')">Back</button>
+    <button class="buttonformat edit-button">Edit</button>
+</div>
     
       <h1 id="titleformat">Details</h1>
 
@@ -38,21 +41,21 @@ export default {
       <div class="grid-container2">
         <!-- Empty first column -->
         <div class="content-column">
-          <p class="paddingforparts">Placeholder 4</p>
-          <p class="paddingforparts">Placeholder 4</p>
-          <p class="paddingforparts">Placeholder 4</p>
-          <p class="paddingforparts">Placeholder 4</p>
-          <p class="paddingforparts">Placeholder 4</p>
+          <p class="paddingforparts"> Date: </p>
+          <p class="paddingforparts"> Print Type: </p>
+          <p class="paddingforparts">Location: </p>
+          <p class="paddingforparts">Medium: </p>
+          <p class="paddingforparts">Demensions: </p>
 
           </div>
 
         <!-- Second column -->
         <div class="content-column">
-          <p class="border-box">placeholder 5</p>
+          <p class="border-box">{{ artwork.date }}</p>
           <p class="border-box">placeholder 6</p>
-          <p class="border-box">placeholder 7</p>
-          <p class="border-box">placeholder 8</p>
-          <p class="border-box">placeholder 8</p>
+          <p class="border-box">placeholder</p>
+          <p class="border-box">{{ artwork.medium }}</p>
+          <p class="border-box">{{ artwork.dimensions }}</p>
         </div>
       </div>
     </div>
@@ -60,5 +63,13 @@ export default {
   //artwork is bound to selectedArtwork in index.html. When a user clicks an artwork card on the main page, that artwork object is passed to app.js and set as selectedArtwork. 
   // Then when the details page is shown, it receives that selectedArtwork as a prop called "artwork". So we can access the properties of the selected artwork using "artwork.propertyName" in this component.
   props: ["artwork"],
+
+    methods: {
+    returnToMain() {
+
+    }
+  }
+
+  
 
 }

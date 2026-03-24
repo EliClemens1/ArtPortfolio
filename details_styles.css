@@ -25,6 +25,9 @@
     width: 100px;
     height: 40px;
     cursor: pointer;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 14px;
 }
 #rightbuttonalign{
     display: flex;

@@ -11,13 +11,14 @@ createApp({
         'main-page': MainPage,
         'details-page': DetailsPage
     },
-
+//current page will control the view state of the app. It starts on the login page.
     data() {
         return {
             currentPage: "login",
             selectedArtwork: null
         }
     },
+    //if login is successful, change currentPage to main
     methods: {
         loginSuccess(){
             this.currentPage = "main"
@@ -27,7 +28,10 @@ createApp({
             // We set that object to selectedArtwork and change the page to details, which will show the details page and pass the selected artwork to it.
             this.selectedArtwork = art
             this.currentPage = "details"
-        }
+        },
+        returnToMain(){
+            this.currentPage = "main"
+        },
     }
 
 }).mount("#app")
