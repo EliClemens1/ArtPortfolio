@@ -22,11 +22,14 @@ export default {
                 <label for="artMedium">Medium:</label>
                 <input id="artMedium" name="artMedium"/><br>
 
-                <label for="artHeight">Height:</label>
+                <label for="artHeight">Height (in):</label>
                 <input type="number" min="0" id="artHeight" name="artHeight"/>
 
-                <label for="artWidth" style="margin-left: 5px">Width:</label>
-                <input type="number" min="0" id="artWidth" name="artWidth"/><br>
+                <label for="artWidth" style="margin-left: 10px">Width (in):</label>
+                <input type="number" min="0" id="artWidth" name="artWidth"/>
+                
+                <label for="artDepth" style="margin-left: 10px">Depth (in):</label>
+                <input type="number" min="0" id="artDepth" name="artDepth"/><br>
 
                 <label for="artImages">Images:</label>
                 <input id="artImages" type="file" name="artImages" multiple/>
