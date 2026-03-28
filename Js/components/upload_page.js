@@ -32,7 +32,7 @@ export default {
                 <input v-model="artDepth" type="number" min="0" id="artDepth" name="artDepth"/><br>
 
                 <label for="artImages">Images:</label>
-                <input v-model="artImages" id="artImages" type="file" name="artImages" multiple/>
+                <input v-model="artImages" v-on:change="previewImages" id="artImages" type="file" name="artImages" multiple/>
                 <div id="imgsPreview"></div><br>
 
                 <input type="submit" value="Upload"/>
@@ -51,13 +51,42 @@ export default {
             artHeight: '',
             artWidth: '',
             artDepth: '',
-            artImages: ''
+            artImages: []
         }
     },
 
     methods: {
         artSubmit() {
             alert(this.artTitle + ',' + this.artDesc + ',' + this.artDate + ',' + this.artPrint + ',' + this.artLocation + ',' + this.artMedium + ',' + this.artHeight + 'x' + this.artWidth + 'x' + this.artDepth + ',' + this.artImages)
+        },
+
+        previewImages() {
+            var artUpload = document.getElementById("artImages");
+            if (typeof (FileReader) != undefined) {
+                var artPreview = document.getElementById("imgsPreview");
+                artPreview.innerHTML = "";
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                for (var i = 0; i < artUpload.files.length; i++) {
+                    var artFile = artUpload.files[i];
+                    if (regex.test(artFile.name.toLowerCase())) {
+                        var reader = new FileReader;
+                        reader.onload = function (e) {
+                            var img = document.createElement("IMG");
+                            img.src = e.target.result;
+                            artPreview.appendChild(img);
+                        }
+                        reader.readAsDataURL(artFile);
+                    }
+                    else {
+                        alert(artFile.name + "is not a valid image file.");
+                        artPreview.innerHTML = "";
+                        return false;
+                    }
+                }
+            }
+            else {
+                alert("This browser does not support HTML5 FileReader");
+            }
         }
     }
 }
