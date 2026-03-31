@@ -13,26 +13,29 @@ export default {
       <div class="side-by-side-grid">
         <!-- Left column -->
         <div class="left-column">
-          <img :src="artwork.image" alt="Placeholder Image">
-          <p class="placeholder-text">{{ artwork.title }}</p>
+          <img :src="selectedImage" alt="Main Image">
+          <p class="placeholder-title">{{ artwork.title }}</p>
         </div>
 
         <!-- Right column -->
         <div class="right-column ">
           <div class="border-box" id="divesizeincrease">
-          <button class="image-button">
-          <img src="https://via.placeholder.com/50" alt="Image 1">
-          </button>
-          <button class="image-button">
-          <img src="https://via.placeholder.com/50" alt="Image 2">
-          </button>
-          <button class="image-button">
-          <img src="https://via.placeholder.com/50" alt="Image 3">
-          </button>
+            <img
+              :src="artwork.image"
+              alt="Original Image"
+              class="image-button"
+              @click="setMainImage(artwork.image)">
+            <img 
+              v-for="(img, index) in artwork.extraImages"
+              :key="index"
+              :src="img"
+              :alt="'Image ' + (index + 1)"
+              class="image-button"
+              @click="setMainImage(img)">
 
           </div>
-          <p class="border-box" id="biggerdescription">Placeholder 2</p>
-          <p class="border-box">Placeholder 3</p>
+          <p class="border-box" id="biggerdescription">{{artwork.longDiscription}}</p>
+          <p class="border-box"> Artist: {{ artwork.artist }}</p>
           <p class="border-box">Placeholder 4</p>
         </div>
       </div>
@@ -64,12 +67,20 @@ export default {
   // Then when the details page is shown, it receives that selectedArtwork as a prop called "artwork". So we can access the properties of the selected artwork using "artwork.propertyName" in this component.
   props: ["artwork"],
 
-    methods: {
-    returnToMain() {
+  data() {
+    return {
+      selectedImage: this.artwork.image
+    };
+  },
 
-    }
+  methods: {
+    returnToMain() {
+    },
+      setMainImage(img) {
+    this.selectedImage = img;
+  }
   }
 
-  
+
 
 }
