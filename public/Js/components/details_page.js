@@ -4,9 +4,9 @@ export default {
 
 <div class="button-row">
     <button class="buttonformat" @click="$emit('back')">Back</button>
-    <button class="buttonformat edit-button">Edit</button>
+     <button class="buttonformat edit-button" @click="$emit('open-edit', artwork)">Edit</button>
 </div>
-    
+
       <h1 id="titleformat">Details</h1>
 
       <!-- Grid container: left and right columns -->
@@ -57,7 +57,7 @@ export default {
           <p class="border-box">{{ artwork.date }}</p>
           <p class="border-box">placeholder 6</p>
           <p class="border-box">placeholder</p>
-          <p class="border-box">{{ artwork.medium }}</p>
+          <p class="border-box">{{ artwork.height }} x {{artwork.width }}</p>
           <p class="border-box">{{ artwork.dimensions }}</p>
         </div>
       </div>

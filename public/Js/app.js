@@ -1,6 +1,7 @@
 import MainPage from "./components/main_page.js"
 import DetailsPage from "./components/details_page.js"
 import LoginPage from "./components/login_page.js"
+import EditPage from "./components/edit_page.js"    
 
 const { createApp } = Vue
 
@@ -9,7 +10,8 @@ createApp({
     components: {
         'login-page': LoginPage,
         'main-page': MainPage,
-        'details-page': DetailsPage
+        'details-page': DetailsPage,
+        'edit-page' : EditPage
     },
 //current page will control the view state of the app. It starts on the login page.
     data() {
@@ -32,6 +34,11 @@ createApp({
         returnToMain(){
             this.currentPage = "main"
         },
+
+        openEdit(art) {
+            this.selectedArtwork = art
+            this.currentPage = "edit"
+        }
     }
 
 }).mount("#app")

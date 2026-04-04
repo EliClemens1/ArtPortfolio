@@ -4,7 +4,7 @@ export default {
 
 <div class="button-row">
     <button class="buttonformat" @click="$emit('back')">Back</button>
-    <button class="buttonformat edit-button">Edit</button>
+     <button class="buttonformat" @click="$emit('open-edit', artwork)">Edit</button>
 </div>
     
       <h1 id="titleformat">Details</h1>
@@ -78,7 +78,7 @@ export default {
     },
       setMainImage(img) {
     this.selectedImage = img;
-  }
+  },
   }
 
 
