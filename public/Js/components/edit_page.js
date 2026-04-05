@@ -6,7 +6,7 @@ export default {
             <form>
                 <label for="artTitle">Title:</label>
                 <input id="artTitle" name="artTitle"
-                v-model="artwork.title"
+                v-model="editableArtwork.title"
 
                 /><br>
 
@@ -14,23 +14,23 @@ export default {
                 <textarea id="artDesc" name="artDesc" rows="1" cols="40" v-model="editableArtwork.longDescription"></textarea><br>
 
                 <label for="artDate">Date:</label>
-                <input id="artDate" name="artDate" v-model="artwork.date"/><br>
+                <input id="artDate" name="artDate" v-model="editableArtwork.date"/><br>
 
                 <label for="artPrint">Print Type:</label>
-                <input id="artPrint" name="artPrint"/><br>
+                <input id="artPrint" name="artPrint" v-model="editableArtwork.printType"/><br>
 
                 <label for="artLocation">Location:</label>
-                <input id="artLocation" name="artLocation"/><br>
+                <input id="artLocation" name="artLocation" v-model="editableArtwork.location"/><br>
 
                 <label for="artMedium">Medium:</label>
-                <input id="artMedium" name="artMedium" v-model="artwork.medium"/><br>
+                <input id="artMedium" name="artMedium" v-model="editableArtwork.medium"/><br>
 
                 <label for="artHeight">Height:</label>
                 <input type="number" min="0" id="artHeight" name="artHeight"
-                v-model="artwork.height"/>
+                v-model="editableArtwork.height"/>
 
                 <label for="artWidth" style="margin-left: 5px">Width:</label>
-                <input type="number" min="0" id="artWidth" name="artWidth" v-model="artwork.width"/><br>
+                <input type="number" min="0" id="artWidth" name="artWidth" v-model="editableArtwork.width"/><br>
 
                 <label for="artImages">Images:</label>
                 <input id="artImages" type="file" name="artImages" multiple/>
