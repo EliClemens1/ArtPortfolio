@@ -1,58 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Artist Portfolio</title>
 
-<link rel="stylesheet" href="../style.css">
-<link rel="stylesheet" href="../details_styles.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Portfolio</title>
+
+  <link rel="stylesheet" href="../public/style.css">
 
 </head>
 
 <body>
 
-<div id="app">
+  <div id="app">
 
     <login-page v-if="currentPage === 'login'" @login="loginSuccess"></login-page>
 
-    <main-page v-if="currentPage === 'main'" @open-details="openDetails"></main-page>
+    <main-page v-if="currentPage === 'main'" @open-details="openDetails" @open-upload="openUpload"></main-page>
 
-    <details-page v-if="currentPage === 'details'" :artwork="selectedArtwork" @back="currentPage = 'main'"></details-page>
+    <details-page v-if="currentPage === 'details'" :artwork="selectedArtwork" @back="currentPage = 'main'"  @open-edit="openEdit"></details-page>
+    
+    <edit-page v-if="currentPage === 'edit'" :artwork="selectedArtwork"></edit-page>
+
+    <upload-page v-if="currentPage === 'upload'" @upload-complete="returnToMain"></upload-page>
 
 
 
 
-</div>
 
-<!-- Load Vue -->
-<script src="https://unpkg.com/vue@3"></script>
+  </div>
 
-<!-- Load the app module -->
-<script type="module" src="Js/app.js"></script>
-<!-- Load Firebase -->
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  <!-- Load Vue -->
+  <script src="https://unpkg.com/vue@3"></script>
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAu6qMHLDBX3fut13I-2ycsLlUeZsF-r88",
-    authDomain: "artist-s-portfolio.firebaseapp.com",
-    projectId: "artist-s-portfolio",
-    storageBucket: "artist-s-portfolio.firebasestorage.app",
-    messagingSenderId: "926993318979",
-    appId: "1:926993318979:web:a61f85960d358d66e600f6",
-    measurementId: "G-D1THX3K7LK"
-  };
+  <!-- Load the app module -->
+  <script type="module" src="Js/app.js"></script>
+  <!-- Load Firebase -->
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
 </body>
+
 </html>
