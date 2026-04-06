@@ -1,5 +1,5 @@
 import { db, storage } from "../FireBase/firebase_config.js";
-import { addDoc, collection } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { addArtwork } from "../FireBase/firebase_service.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-storage.js";
 
 export default {
@@ -93,9 +93,10 @@ export default {
                     otherImages: []
                 };
 
-                await addDoc(collection(db, "artworks"), artwork);
+                await addArtwork(artwork);
 
                 alert("Artwork uploaded successfully!");
+                this.$emit("upload-complete");
             } catch (error) {
                 console.error("Upload failed:", error);
             }
