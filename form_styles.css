@@ -1,0 +1,26 @@
+#formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    text-align: center;
+}
+
+label {
+    margin: 15px 25px 0px 0px;
+    font-weight: bold;
+}
+
+input {
+    margin: 15px 0px 0px 0px;
+}
+
+img {
+    padding: 10px 5px;
+    max-height: 150px;
+    height: auto;
+    width: auto;
+}
