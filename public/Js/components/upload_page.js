@@ -6,13 +6,16 @@ export default {
     template: `
         <h1 id="titleformat">Upload Artwork</h1>
 
-        <div id="uploadFormContainer">
+        <div id="formContainer">
             <form class="artworkForm" @submit.prevent="saveArtwork">
                 <label for="artTitle">Title:</label>
-                <input id="uploadArtTitle" name="artTitle" v-model="artTitle"/>
+                <input id="uploadArtTitle" name="artTitle" v-model="artTitle"/><br>
 
-                <label for="artDesc">Description:</label>
-                <textarea id="uploadArtDesc" name="artDesc" rows="1" cols="40" v-model="artLongDesc"></textarea><br>
+                <label for="artShortDesc">Short Descriptions:</label>
+                <textarea id="uploadShortDesc" name="artShortDesc" rows="1" cols="30" v-model="artShortDesc"></textarea><br>
+
+                <label for="artLongDesc">Description:</label>
+                <textarea id="uploadArtDesc" name="artLongDesc" rows="3" cols="40" v-model="artLongDesc"></textarea><br>
 
                 <label for="artDate">Date:</label>
                 <input id="uploadArtDate" type="date" name="artDate" v-model="artDate"/><br>
@@ -35,6 +38,11 @@ export default {
                 <div id="imgsPreview">
                     <img v-if="previewImage" :src="previewImage" alt="Preview"/>
                 </div><br>
+
+                <label for="otherImageURLs">Other Images:</label>
+                <input id="uploadOtherImages" type="file" name="otherImageURLs" @change="handleMultiImageUpload" multiple/>
+
+                <div id="otherImgsPreview"></div><br>
 
                 <input type="submit" value="Upload"/>
             </form>
@@ -64,9 +72,29 @@ export default {
             this.previewImage = URL.createObjectURL(file);
         },
 
+        handleMultiImageUpload() {
+            var multiImageUpload = document.getElementById("uploadOtherImages");
+            if (typeof (FileReader) != "undefined") {
+                var multiImagePreview = document.getElementById("otherImgsPreview");
+                multiImagePreview.innerHTML = "";
+                for (var i = 0; i < multiImageUpload.files.length; i++) {
+                    var file = multiImageUpload.files[i]
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = document.createElement("IMG");
+                        img.src = e.target.result;
+                        multiImagePreview.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+        },
+
         async saveArtwork() {
             try {
                 let imageUrl = "";
+                let otherImageUrl = "";
+                let otherImageUrls = [];
 
                 if (this.selectedFile) {
                     const storageRef = ref(
@@ -80,6 +108,24 @@ export default {
                     console.log("Image URL:", imageUrl);
                 }
 
+                var multiImageUpload = document.getElementById("uploadOtherImages");
+                if (typeof (FileReader) != "undefined") {
+                    for (var i = 0; i < multiImageUpload.files.length; i++) {
+                        const storageRef = ref(
+                            storage,
+                            `artworks/${multiImageUpload.files[i].name}`
+                        );
+
+                        await uploadBytes(storageRef, multiImageUpload.files[i]);
+
+                        otherImageUrl = await getDownloadURL(storageRef);
+                        console.log("Image URL:", otherImageUrl);
+
+                        otherImageUrls.push(otherImageUrl);
+                        console.log(otherImageUrls);
+                    }
+                }
+
                 const artwork = {
                     title: this.artTitle,
                     shortDescription: this.artShortDesc,
@@ -90,7 +136,7 @@ export default {
                     medium: this.artMedium,
                     dimensions: this.artDimensions,
                     imageUrl: imageUrl,
-                    otherImages: []
+                    otherImages: otherImageUrls
                 };
 
                 await addArtwork(artwork);
