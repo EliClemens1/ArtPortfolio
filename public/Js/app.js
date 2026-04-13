@@ -50,6 +50,10 @@ createApp({
         returnToMain(){
             this.currentPage = "main"
         },
+        returnToDetails(){
+            this.editableArtwork = art
+            this.currentPage = "details"
+        },
 
         openEdit(art) {
             this.selectedArtwork = art

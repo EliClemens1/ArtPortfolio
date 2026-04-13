@@ -1,14 +1,23 @@
+import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { db } from "../FireBase/firebase_config.js";
+
+
 export default {
     template: `
+
+        <div class="button-row">
+        <button class="buttonformat" @click="$emit('back')">Back</button>
+        </div>
         <h1 id="titleformat">Edit Artwork</h1>
 
         <div id="formContainer">
-            <form>
+            <form @submit.prevent="updateArtwork">
                 <label for="artTitle">Title:</label>
                 <input id="artTitle" name="artTitle"
                 v-model="editableArtwork.title"
 
                 /><br>
+        
 
                 <label for="artDesc">Description:</label>
                 <textarea id="artDesc" name="artDesc" rows="1" cols="40" v-model="editableArtwork.longDescription"></textarea><br>
@@ -25,16 +34,21 @@ export default {
                 <label for="artMedium">Medium:</label>
                 <input id="artMedium" name="artMedium" v-model="editableArtwork.medium"/><br>
 
-                <label for="artHeight">Height:</label>
-                <input type="number" min="0" id="artHeight" name="artHeight"
-                v-model="editableArtwork.height"/>
+                <label for="artDimensions">Dimensions:</label>
+                <input id="ArtDimensions" name="artDimensions" v-model="editableArtwork.dimensions"/><br>
 
-                <label for="artWidth" style="margin-left: 5px">Width:</label>
-                <input type="number" min="0" id="artWidth" name="artWidth" v-model="editableArtwork.width"/><br>
+                <div>
+                  <img v-if="previewImage" :src="previewImage" alt="Main Preview"/>
+                </div>
 
-                <label for="artImages">Images:</label>
-                <input id="artImages" type="file" name="artImages" multiple/>
-                <div id="imgsPreview"></div><br>
+                <!-- Other Images Preview -->
+                <div>
+                  <img 
+                    v-for="(img, index) in otherPreviewImages" 
+                    :key="index" 
+                    :src="img" 
+                    class="preview-img"/>
+                </div>
 
                 <input type="submit" value="Upload"/>
             </form>
@@ -43,10 +57,49 @@ export default {
     props: ["artwork"],
     data() {
   return {
-    editableArtwork: { ...this.artwork } 
+    editableArtwork: { ...this.artwork },
+    previewImage: this.artwork.imageUrl,     
+    otherPreviewImages: [...(this.artwork.otherImages || [])] 
   }
-}
+},
+    methods: {
+async updateArtwork() {
+  try {
+
+    const docRef = doc(db, "artworks", this.artwork.id);
+
+    await updateDoc(docRef, {
+      ...this.editableArtwork,
+      imageUrl: this.previewImage,
+      otherImages: this.otherPreviewImages
+    });
+
+    console.log("UPDATE SUCCESS");
+    alert("Artwork updated!");
+    this.$emit("back");
+
+  } catch (error) {
+    console.error("UPDATE ERROR:", error);
+  }
+},
+
+
+handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  this.selectedFile = file;
+  this.previewImage = URL.createObjectURL(file);
+},
+
+handleMultiImageUpload(event) {
+  const files = event.target.files;
+
+  for (let file of files) {
+    this.otherPreviewImages.push(URL.createObjectURL(file));
+  }
+        },
 
 }
 
-
+}
