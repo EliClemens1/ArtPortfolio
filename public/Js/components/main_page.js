@@ -10,9 +10,7 @@ export default {
             //selectedIds will hold the checkboxes selected for export
             selectedIds: [],
             filters: {
-            medium: "",
-            startDate: "",
-            endDate: ""
+                search: ""
             }
         }
     },
@@ -59,6 +57,7 @@ export default {
             link.setAttribute('download', 'export_artwork.csv');
             link.click();
         },
+
         exportDataToJson() 
         {
             console.log("AddToJson button clicked");
@@ -83,15 +82,33 @@ export default {
 
     },
 
-    template: `
-    <div class="main-page">
+    computed: {
+        filteredArtworks() {
+            return this.artworks.filter(art => {
 
-        <h2>Main Page</h2>
+                const search = this.filters.search.toLowerCase();
+
+                return (
+                    art.title?.toLowerCase().includes(search) ||
+                    art.shortDescription?.toLowerCase().includes(search) ||
+                    art.longDescription?.toLowerCase().includes(search) ||
+                    art.medium?.toLowerCase().includes(search) ||
+                    art.location?.toLowerCase().includes(search)
+                );
+            });
+        }
+    },
+
+    template: `
+        <div class="main-page">
+
+            <h2>Main Page</h2>
 
         <div class="actions">
-            <input type="text" placeholder="Search artwork...">
+            <input type="text"
+                placeholder="Search artwork..."
+                v-model="filters.search">
             <button @click="$emit('open-upload')">Upload Artwork</button>
-            <button>Filter</button>
             <button @click="exportDataToCsv">Export to CSV</button>
             <button @click="exportDataToJson">Export to JSON</button>
         </div>
@@ -99,7 +116,7 @@ export default {
         <div class="artwork-list">
 
             <div class="art-card"
-                v-for="art in artworks"
+                v-for="art in filteredArtworks"
                 :key="art.id">
 
                 <input type="checkbox"
@@ -123,12 +140,11 @@ export default {
     </div>
     `,
     async mounted() {
-    const querySnapshot = await getDocs(collection(db, "artworks"));
+        const querySnapshot = await getDocs(collection(db, "artworks"));
 
-    this.artworks = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-    }));
-},
+        this.artworks = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    },
 }
-/**        */
