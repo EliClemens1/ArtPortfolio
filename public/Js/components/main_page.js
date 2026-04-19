@@ -6,7 +6,14 @@ export default {
     data() {
         return {
 
-            artworks: []
+            artworks: [],
+            //selectedIds will hold the checkboxes selected for export
+            selectedIds: [],
+            filters: {
+            medium: "",
+            startDate: "",
+            endDate: ""
+            }
         }
     },
 
@@ -20,6 +27,12 @@ export default {
         selectArtwork(art) {
             //tell the parent which artwork was selected from v-for(art in artworks) array and emit the signal to open the details page
             this.$emit("open-details", art)
+        },
+
+        getSelectedArtworks() {
+            return this.artworks.filter(art =>
+                this.selectedIds.includes(art.id)
+            );
         },
 
         exportDataToCsv(artworks) {
@@ -45,35 +58,62 @@ export default {
             link.href = url;
             link.setAttribute('download', 'export_artwork.csv');
             link.click();
-        }
+        },
+        exportDataToJson() 
+        {
+            console.log("AddToJson button clicked");
+            const selected = this.getSelectedArtworks();
+            console.log(selected);
+
+            if (selected.length === 0) {
+                alert("No artworks selected");
+                return;
+            }
+
+            const json = JSON.stringify(selected, null, 2);
+
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'selected_artworks.json';
+            link.click();
+        },
 
     },
+
     template: `
     <div class="main-page">
 
         <h2>Main Page</h2>
+
         <div class="actions">
             <input type="text" placeholder="Search artwork...">
             <button @click="$emit('open-upload')">Upload Artwork</button>
             <button>Filter</button>
             <button @click="exportDataToCsv">Export to CSV</button>
+            <button @click="exportDataToJson">Export to JSON</button>
         </div>
 
         <div class="artwork-list">
 
             <div class="art-card"
-                 v-for="art in artworks"
-                 :key="art.title"
-                 @click="selectArtwork(art)">
+                v-for="art in artworks"
+                :key="art.id">
 
-                <div class="art-image">
+                <input type="checkbox"
+                    :value="art.id"
+                    v-model="selectedIds"
+                    @click.stop>
+
+                <div class="art-image" @click="selectArtwork(art)">
                     <img :src="art.imageUrl" alt="Artwork Image">
                 </div>
 
-                <div class="art-info">
+                <div class="art-info" @click="selectArtwork(art)">
                     <h3>{{ art.title }}</h3>
                     <p>{{ art.shortDescription }}</p>
-
                 </div>
 
             </div>
@@ -91,3 +131,4 @@ export default {
     }));
 },
 }
+/**        */
