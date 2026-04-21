@@ -55,6 +55,7 @@ export default {
           <p class="border-box">{{ artwork.date }}</p>
           <p class="border-box">placeholder 6</p>
           <p class="border-box">placeholder</p>
+          <p class="border-box">{{ artwork.medium }}</p>
           <p class="border-box">{{ artwork.dimensions }}</p>
         </div>
       </div>
