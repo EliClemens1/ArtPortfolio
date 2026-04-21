@@ -66,7 +66,6 @@ export default {
         </form>
     </div>
   `,   
-  emits: ["back"], 
   props: ["artwork"],
   data() {
     return {

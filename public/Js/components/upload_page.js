@@ -4,6 +4,8 @@ import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/fireba
 
 export default {
     template: `
+        <button class="buttonformat" @click="$emit('back')">Back</button>
+
         <h1 id="titleformat">Upload Artwork</h1>
 
         <div id="formContainer">
@@ -29,8 +31,6 @@ export default {
                 <option value="unpublished">Unpublished</option>
             </select>
 
-            <hr>
-
             <label>Title:</label>
             <input v-model="title" />
 
@@ -45,8 +45,6 @@ export default {
 
             <label>Dimensions:</label>
             <input v-model="dimensions" />
-
-            <hr>
 
             <label>Main Image:</label>
             <input type="file" @change="handleImageUpload" />
@@ -68,6 +66,7 @@ export default {
             </form>
         </div>
     `,
+    emits: ["back"],
 
     data() {
         return {

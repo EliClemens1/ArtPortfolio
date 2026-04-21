@@ -190,3 +190,21 @@ h1, h2, h3 {
 .google-btn:hover {
     background-color: #3367d6;
 }
+/********************************************* Upload Page *********************************************/
+#formContainer {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.artworkForm {
+    width: 600px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}

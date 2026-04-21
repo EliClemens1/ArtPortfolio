@@ -26,7 +26,7 @@
     
     <edit-page v-if="currentPage === 'edit'" :artwork="selectedArtwork" @back="currentPage = 'details'" ></edit-page>
 
-    <upload-page v-if="currentPage === 'upload'" @upload-complete="returnToMain"></upload-page>
+    <upload-page v-if="currentPage === 'upload'" @upload-complete="returnToMain" @back="returnToMain"></upload-page>
 
 
 
