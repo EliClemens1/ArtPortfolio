@@ -11,60 +11,88 @@ export default {
 
         <div id="formContainer">
             <form class="artworkForm" @submit.prevent="saveArtwork">
-                <label for="artTitle">Title:</label>
-                <input id="uploadArtTitle" name="artTitle" v-model="artTitle"/><br>
+            <label>Subject:</label>
+            <input v-model="subject" />
 
-                <label for="artShortDesc">Short Descriptions:</label>
-                <textarea id="uploadShortDesc" name="artShortDesc" rows="1" cols="30" v-model="artShortDesc"></textarea><br>
+            <label>Year:</label>
+            <input v-model="year" placeholder="2026" />
 
-                <label for="artLongDesc">Description:</label>
-                <textarea id="uploadArtDesc" name="artLongDesc" rows="3" cols="40" v-model="artLongDesc"></textarea><br>
+            <label>Category:</label>
+            <input v-model="category" />
 
-                <label for="artDate">Date:</label>
-                <input id="uploadArtDate" type="date" name="artDate" v-model="artDate"/><br>
+            <label>Materials:</label>
+            <input v-model="materials" />
 
-                <label for="artPrint">Print Type:</label>
-                <input id="uploadArtPrint" name="artPrint" v-model="artPrint"/><br>
+            <label>Styles:</label>
+            <input v-model="styles" />
 
-                <label for="artLocation">Location:</label>
-                <input id="uploadArtLocation" name="artLocation" v-model="artLocation"/><br>
+            <label>Visibility:</label>
+            <select v-model="visibility">
+                <option value="published">Published</option>
+                <option value="unpublished">Unpublished</option>
+            </select>
 
-                <label for="artMedium">Medium:</label>
-                <input id="uploadArtMedium" name="artMedium" v-model="artMedium"/><br>
+            <hr>
 
-                <label for="artDimensions">Dimensions:</label>
-                <input id="uploadArtDimensions" name="artDimensions" v-model="artDimensions"/><br>
+            <label>Title:</label>
+            <input v-model="title" />
 
-                <label for="ImageUrl">Main Image:</label>
-                <input id="uploadImageUrl" type="file" name="ImageUrl" @change="handleImageUpload"/>
+            <label>Short Description:</label>
+            <textarea rows="2" v-model="shortDescription"></textarea>
 
-                <div id="imgsPreview">
-                    <img v-if="previewImage" :src="previewImage" alt="Preview"/>
-                </div><br>
+            <label>Long Description:</label>
+            <textarea rows="4" v-model="longDescription"></textarea>
 
-                <label for="otherImageURLs">Other Images:</label>
-                <input id="uploadOtherImages" type="file" name="otherImageURLs" @change="handleMultiImageUpload" multiple/>
+            <label>Medium:</label>
+            <input v-model="medium" />
 
-                <div id="otherImgsPreview"></div><br>
+            <label>Dimensions:</label>
+            <input v-model="dimensions" />
 
-                <input type="submit" value="Upload"/>
+            <hr>
+
+            <label>Main Image:</label>
+            <input type="file" @change="handleImageUpload" />
+
+            <div>
+                <img v-if="previewImage" :src="previewImage" alt="Preview" />
+            </div>
+
+            <label>Other Images:</label>
+            <input id="uploadOtherImages" type="file" @change="handleMultiImageUpload" multiple />
+
+            <div id="otherImgsPreview"></div>
+            <br>
+
+            <input
+            type="submit"
+            :value="isUploading ? 'Uploading...' : 'Upload'"
+            :disabled="isUploading" />
             </form>
         </div>
     `,
 
     data() {
         return {
+            isUploading: false,
+
             selectedFile: null,
             previewImage: null,
 
-            artTitle: "",
-            artShortDesc: "",
-            artLongDesc: "",
-            artDate: "",
-            artPrint: "",
-            artLocation: "",
-            artMedium: "",
-            artDimensions: ""
+            title: "",
+            shortDescription: "",
+            longDescription: "",
+
+            subject: "",
+            year: "",
+            category: "",
+            medium: "",
+            materials: "",
+            styles: "",
+            dimensions: "",
+
+            visibility: "unpublished",   
+            dateUploaded: ""
         };
     },
 
@@ -95,6 +123,8 @@ export default {
 
         async saveArtwork() {
             try {
+                if (this.isUploading) return;
+                this.isUploading = true;
                 let imageUrl = "";
                 let otherImageUrl = "";
                 let otherImageUrls = [];
@@ -130,16 +160,24 @@ export default {
                 }
 
                 const artwork = {
-                    title: this.artTitle,
-                    shortDescription: this.artShortDesc,
-                    longDescription: this.artLongDesc,
-                    date: this.artDate,
-                    printType: this.artPrint,
-                    location: this.artLocation,
-                    medium: this.artMedium,
-                    dimensions: this.artDimensions,
-                    imageUrl: imageUrl,
-                    otherImages: otherImageUrls
+                    title: this.title,
+                    shortDescription: this.shortDescription,
+                    longDescription: this.longDescription,
+
+                    subject: this.subject,
+                    year: this.year,
+                    category: this.category,
+                    medium: this.medium,
+                    materials: this.materials,
+                    styles: this.styles,
+                    dimensions: this.dimensions,
+
+                    visibility: this.visibility,
+
+                    masterImage: imageUrl,
+                    images: otherImageUrls,
+
+                    dateUploaded: new Date().toISOString()
                 };
 
                 await addArtwork(artwork);
@@ -148,6 +186,8 @@ export default {
                 this.$emit("upload-complete");
             } catch (error) {
                 console.error("Upload failed:", error);
+            }finally {
+                this.isUploading = false;
             }
         }
     }

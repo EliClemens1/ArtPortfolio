@@ -1,12 +1,17 @@
 import { db } from "../FireBase/firebase_config.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
+import { doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 export default {
 
     data() {
         return {
 
-            artworks: []
+            artworks: [],
+            //selectedIds will hold the checkboxes selected for export
+            selectedIds: [],
+            filters: {
+                search: ""
+            }
         }
     },
 
@@ -22,20 +27,55 @@ export default {
             this.$emit("open-details", art)
         },
 
+        getSelectedArtworks() {
+            return this.artworks.filter(art =>
+                this.selectedIds.includes(art.id)
+            );
+        },
+
         exportDataToCsv(artworks) {
-            // Turns otherImages array into a string so it can be put into a single column in the CSV file
-            let otherImgStr = "";
-            if (artworks.otherImages != null) {
-                for (let i = 0; i < artworks.otherImages.length; i++) {
-                    var imgStr = JSON.stringify(artworks.otherImages[i]).replace(/"/g, "'");
-                    otherImgStr += imgStr;
-                    return otherImgStr
+            // Turns images array into a string so it can be put into a single column in the CSV file
+            let imagesStr = "";
+            if (artworks.images != null) {
+                for (let i = 0; i < artworks.images.length; i++) {
+                    var imgStr = JSON.stringify(artworks.images[i]).replace(/"/g, "'");
+                    imagesStr += imgStr;
+                    return imagesStr
                 }
             }
             // Outlines headers for the CSV file
-            const headers = ['title', 'shortDescription', 'longDescription', 'date', 'printType', 'location', 'medium', 'dimensions', 'imageURL', 'otherImages'].join(',')
+            const headers = [
+                'title',
+                'shortDescription',
+                'longDescription',
+                'subject',
+                'year',
+                'category',
+                'medium',
+                'materials',
+                'styles',
+                'dimensions',
+                'visibility',
+                'dateUploaded'
+            ].join(',')
+
             // Outlines rows for the CSV file
-            const rows = [artworks.title, artworks.shortDescription, artworks.longDescription, artworks.date, artworks.printType, artworks.location, artworks.medium, artworks.dimensions, artworks.imageURL, otherImgStr].join(',')
+            const rows = [
+                artworks.title,
+                artworks.shortDescription,
+                artworks.longDescription,
+                artworks.subject,
+                artworks.year,
+                artworks.category,
+                artworks.medium,
+                artworks.materials,
+                artworks.styles,
+                artworks.dimensions,
+                artworks.visibility,
+                artworks.dateUploaded,
+                imagesStr
+            ].join(',')
+
             const csvRows = [headers, rows].join('\n')
 
             // Creates download link for CSV file
@@ -45,49 +85,132 @@ export default {
             link.href = url;
             link.setAttribute('download', 'export_artwork.csv');
             link.click();
+        },
+
+        exportDataToJson() 
+        {
+            console.log("AddToJson button clicked");
+            const selected = this.getSelectedArtworks();
+            console.log(selected);
+
+            if (selected.length === 0) {
+                alert("No artworks selected");
+                return;
+            }
+
+            const json = JSON.stringify(selected, null, 2);
+
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'selected_artworks.json';
+            link.click();
+        },
+
+        //date for display
+        formatDate(date) {
+            if (!date) return "";
+            return new Date(date).toLocaleDateString();
+        },
+        async deleteArtwork(id) {
+            const confirmDelete = confirm("Are you sure you want to delete this artwork?");
+            if (!confirmDelete) return;
+
+            try {
+                const docRef = doc(db, "artworks", id);
+                await deleteDoc(docRef);
+
+                // remove from UI 
+                this.artworks = this.artworks.filter(art => art.id !== id);
+
+                alert("Artwork deleted!");
+            } catch (error) {
+                console.error("DELETE ERROR:", error);
+            }
         }
-
     },
+
+    computed: {
+        filteredArtworks() {
+            return this.artworks.filter(art => {
+
+                const search = this.filters.search.toLowerCase();
+
+                return (
+                    art.title?.toLowerCase().includes(search) ||
+                    art.shortDescription?.toLowerCase().includes(search) ||
+                    art.longDescription?.toLowerCase().includes(search) ||
+                    art.medium?.toLowerCase().includes(search) ||
+                    art.category?.toLowerCase().includes(search) ||
+                    art.subject?.toLowerCase().includes(search)
+                );
+            });
+        }
+    },
+
     template: `
-    <div class="main-page">
+        <div class="main-page">
 
-        <h2>Main Page</h2>
-        <div class="actions">
-            <input type="text" placeholder="Search artwork...">
-            <button @click="$emit('open-upload')">Upload Artwork</button>
-            <button>Filter</button>
-            <button @click="exportDataToCsv">Export to CSV</button>
-        </div>
+            <h2>Main Page</h2>
 
-        <div class="artwork-list">
+            <div class="actions">
+                <input type="text"
+                    placeholder="Search artwork..."
+                    v-model="filters.search">
+                <button @click="$emit('open-upload')">Upload Artwork</button>
+                <button @click="exportDataToCsv">Export to CSV</button>
+                <button @click="exportDataToJson">Export to JSON</button>
+            </div>
 
-            <div class="art-card"
-                 v-for="art in artworks"
-                 :key="art.title"
-                 @click="selectArtwork(art)">
+            <div class="artwork-list">
 
-                <div class="art-image">
-                    <img :src="art.imageUrl" alt="Artwork Image">
-                </div>
+                <div class="art-card"
+                    v-for="art in filteredArtworks"
+                    :key="art.id">
 
-                <div class="art-info">
-                    <h3>{{ art.title }}</h3>
-                    <p>{{ art.shortDescription }}</p>
+                    <input type="checkbox"
+                        :value="art.id"
+                        v-model="selectedIds"
+                        @click.stop>
+
+
+                    <!-- Image -->
+                    <div class="art-image" @click="selectArtwork(art)">
+                        <img :src="art.masterImage" alt="Artwork Image">
+                    </div>
+
+                    <!-- Info -->
+                    <div class="art-info" @click="selectArtwork(art)">
+                        <h3>{{ art.title }}</h3>
+
+                        <!-- Column 1 content -->
+                        <p><strong>Medium:</strong> {{ art.medium }}</p>
+                        <p><strong>Dimensions:</strong> {{ art.dimensions }}</p>
+
+                        <!-- Column 2 -->
+                        <p><strong>Date Uploaded:</strong> {{ formatDate(art.dateUploaded) }}</p>
+
+                        <!-- Column 3 -->
+                        <p><strong>Status:</strong> {{ art.visibility }}</p>
+                        <button class="delete-button" @click.stop="deleteArtwork(art.id)">Delete</button>
+
+                    </div>
 
                 </div>
 
             </div>
 
         </div>
-
-    </div>
     `,
-    async mounted() {
-    const querySnapshot = await getDocs(collection(db, "artworks"));
 
-    this.artworks = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-    }));
-},
+    async mounted() {
+        const querySnapshot = await getDocs(collection(db, "artworks"));
+
+        this.artworks = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    },
 }

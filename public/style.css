@@ -1,3 +1,31 @@
+/* 🌇 Sunset Theme Base (Purple + Orange) */
+:root {
+    --sunset-purple: #a78bfa;
+    --sunset-purple-dark: #7c3aed;
+
+    --sunset-orange: #ff9f43;
+    --sunset-orange-dark: #ff8c2a;
+
+    --sunset-bg: #fff5f0;
+    --card-bg: #ffffff;
+
+    --text-dark: #3b2f4a;
+    --border-soft: #f2d5c4;
+}
+
+/* Global page styling */
+body {
+    margin: 0;
+
+    font-family: 'Open Sans', sans-serif;
+
+    background-color: var(--sunset-bg);
+    color: var(--text-dark);
+}
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
 /*********************************************Main Page *********************************************/
 
 /* List of artwork cards with image and info side by side*/
@@ -9,11 +37,15 @@
 } 
 
 .art-card{
-    /*Styling for each artwork card with border, padding, and flex layout for image and info*/
     display: flex;
-    border: 1px solid #ccc;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 15px;
+
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-soft);
+
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 159, 67, 0.2);
 }
 
 .art-image img{
@@ -37,6 +69,19 @@
     /*Creates margin between Action-Buttons/input and the art-cards*/
     margin-bottom: 20px;
 }
+.delete-button {
+    margin-left: auto;
+    height: 30px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+}
 /*********************************************Details Page *********************************************/
 #borderOutline {
     border: 2px solid black;
@@ -57,7 +102,7 @@
 .side-by-side-grid {
   display: grid;
   grid-template-columns: .7fr 1fr; /* two equal columns side by side */
-  column-gap: 20px;               /* space between columns */
+  column-gap: 40px;               /* space between columns */
   max-width: auto;
   margin: 0 auto;
 }
@@ -75,4 +120,73 @@
     border: 2px solid black;
     padding: 10px;
     text-align: center;
+}
+/********************************************* Login Page *********************************************/
+
+.login-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+        135deg,
+        #a78bfa,   /* purple */
+        #ffb86b    /* orange */
+    );
+}
+
+.login-card {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    width: 320px;
+
+    box-shadow: 0 8px 20px rgba(167, 139, 250, 0.3);
+}
+
+.login-title {
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.login-subtitle {
+    margin-bottom: 25px;
+    color: #666;
+}
+
+.actions button,
+.google-btn,
+.buttonformat {
+    background-color: #ff9f43;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Hover (your gradient) */
+.actions button:hover,
+.google-btn:hover,
+.buttonformat:hover {
+    background: linear-gradient(
+        135deg,
+        #a78bfa,
+        #ff9f43
+    );
+}
+
+.google-btn:hover,
+.actions button:hover {
+    background: linear-gradient(
+        135deg,
+        var(--sunset-purple-dark),
+        var(--sunset-orange-dark)
+    );
+}
+
+.google-btn:hover {
+    background-color: #3367d6;
 }
