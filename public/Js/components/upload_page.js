@@ -4,14 +4,9 @@ import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/fireba
 
 export default {
     template: `
-<<<<<<< HEAD
-        <button class="buttonformat" @click="$emit('back')">Back</button>
-
-=======
         <div class="button-row">
         <button class="buttonformat" @click="$emit('back')">Back</button>
         </div>
->>>>>>> 87f35b385465a8ec418ff94b695411771bca2486
         <h1 id="titleformat">Upload Artwork</h1>
 
         <div id="formContainer">

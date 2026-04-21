@@ -89,7 +89,6 @@ export default {
 
         exportDataToJson() 
         {
-            console.log("AddToJson button clicked");
             const selected = this.getSelectedArtworks();
             console.log(selected);
 
