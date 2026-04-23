@@ -34,15 +34,13 @@ export default {
         },
 
         exportDataToCsv(artworks) {
-            // Turns images array into a string so it can be put into a single column in the CSV file
-            let imagesStr = "";
-            if (artworks.images != null) {
-                for (let i = 0; i < artworks.images.length; i++) {
-                    var imgStr = JSON.stringify(artworks.images[i]).replace(/"/g, "'");
-                    imagesStr += imgStr;
-                    return imagesStr
-                }
+            // Checks that there are selected artworks
+            const selected = this.getSelectedArtworks();
+            if (selected.length === 0) {
+                alert("No artworks selected");
+                return;
             }
+
             // Outlines headers for the CSV file
             const headers = [
                 'title',
@@ -56,34 +54,46 @@ export default {
                 'styles',
                 'dimensions',
                 'visibility',
-                'dateUploaded'
+                'dateUploaded',
+                'masterImage',
+                'images'
             ].join(',')
 
-            // Outlines rows for the CSV file
-            const rows = [
-                artworks.title,
-                artworks.shortDescription,
-                artworks.longDescription,
-                artworks.subject,
-                artworks.year,
-                artworks.category,
-                artworks.medium,
-                artworks.materials,
-                artworks.styles,
-                artworks.dimensions,
-                artworks.visibility,
-                artworks.dateUploaded,
-                imagesStr
-            ].join(',')
+            // Populates CSV rows
+            const rows = Object.values(selected).map(art => {
+                // Turns images array into a string so it can be put into a single column in the CSV file
+                let imagesStr = '';
+                if (Array.isArray(art.images)) {
+                    imagesStr = art.images.join(' | ');
+                }
 
-            const csvRows = [headers, rows].join('\n')
+                // Outlines rows for CSV
+                return [
+                    art.title,
+                    art.shortDescription,
+                    art.longDescription,
+                    art.subject,
+                    art.year,
+                    art.category,
+                    art.medium,
+                    art.materials,
+                    art.styles,
+                    art.dimensions,
+                    art.visibility,
+                    art.dateUploaded,
+                    art.masterImage,
+                    imagesStr
+                ].join(',')
+            });
+
+            const csvRows = [headers, ...rows].join('\n')
 
             // Creates download link for CSV file
             const blob = new Blob([csvRows], {type: 'text/csv;charset=utf-8'});
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'export_artwork.csv');
+            link.setAttribute('download', 'exported_artwork.csv');
             link.click();
         },
 
