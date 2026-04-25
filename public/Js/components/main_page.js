@@ -1,6 +1,8 @@
 import { db } from "../FireBase/firebase_config.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 import { doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { storage } from "../FireBase/firebase_config.js";
+import { ref, deleteObject } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-storage.js";
 export default {
 
     data() {
@@ -123,22 +125,41 @@ export default {
             if (!date) return "";
             return new Date(date).toLocaleDateString();
         },
-        async deleteArtwork(id) {
-            const confirmDelete = confirm("Are you sure you want to delete this artwork?");
-            if (!confirmDelete) return;
+async deleteArtwork(id) {
+  const confirmDelete = confirm("Are you sure you want to delete this artwork?");
+  if (!confirmDelete) return;
 
-            try {
-                const docRef = doc(db, "artworks", id);
-                await deleteDoc(docRef);
+  try {
+    const artwork = this.artworks.find(art => art.id === id);
 
-                // remove from UI 
-                this.artworks = this.artworks.filter(art => art.id !== id);
+    if (artwork?.masterImage) {
+      try {
+        const mainRef = ref(storage, artwork.masterImage);
+        await deleteObject(mainRef);
+      } catch (err) {}
+    }
 
-                alert("Artwork deleted!");
-            } catch (error) {
-                console.error("DELETE ERROR:", error);
-            }
-        }
+    if (artwork?.images?.length) {
+      const deletePromises = artwork.images.map(async (url) => {
+        try {
+          const imgRef = ref(storage, url);
+          await deleteObject(imgRef);
+        } catch (err) {}
+      });
+
+      await Promise.all(deletePromises);
+    }
+
+    const docRef = doc(db, "artworks", id);
+    await deleteDoc(docRef);
+
+    this.artworks = this.artworks.filter(art => art.id !== id);
+
+    alert("Artwork deleted!");
+  } catch (error) {
+    console.error("DELETE ERROR:", error);
+  }
+}
     },
 
     computed: {
