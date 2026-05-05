@@ -174,8 +174,7 @@ async deleteArtwork(id) {
                     art.longDescription?.toLowerCase().includes(search) ||
                     art.medium?.toLowerCase().includes(search) ||
                     art.category?.toLowerCase().includes(search) ||
-                    art.subject?.toLowerCase().includes(search) ||
-                    art.subject.toLowerCase().includes(status)
+                    art.subject?.toLowerCase().includes(search) 
                 );
             });
         }
@@ -184,7 +183,7 @@ async deleteArtwork(id) {
     template: `
         <div class="main-page">
 
-            <h2>Main Page</h2>
+            <h2></h2>
 
             <div class="actions">
                 <div class="button-row">
@@ -193,12 +192,12 @@ async deleteArtwork(id) {
                     <button @click="exportDataToJson()">Export to JSON</button>
                 </div>
 
-                <input type="text" placeholder="Search artwork...">
+                <input type="text" v-model="filters.search" placeholder="Search artwork...">
             </div>
 
             <div class="artwork-list">
 
-                <div class="art-card"
+                <div class="art-card @click="selectArtwork(art)"
                     v-for="art in filteredArtworks"
                     :key="art.id">
 
@@ -210,24 +209,26 @@ async deleteArtwork(id) {
 
                     <!-- Image -->
                     <div class="art-image" @click="selectArtwork(art)">
-                        <img :src="art.masterImage" alt="Artwork Image">
+                        <img :src="art.masterImage" alt="Artwork Image">                       
+                        <button class="delete-button"
+                            @click.stop="deleteArtwork(art.id)">
+                            Delete
+                        </button>
                     </div>
 
-                    <!-- Info -->
                     <div class="art-info" @click="selectArtwork(art)">
                         <h3>{{ art.title }}</h3>
 
-                        <!-- Column 1 content -->
+                        <p class="short-description">
+                            {{ art.shortDescription }}
+                        </p>
+
                         <p><strong>Medium:</strong> {{ art.medium }}</p>
                         <p><strong>Dimensions:</strong> {{ art.dimensions }}</p>
 
-                        <!-- Column 2 -->
                         <p><strong>Date Uploaded:</strong> {{ formatDate(art.dateUploaded) }}</p>
 
-                        <!-- Column 3 -->
                         <p><strong>Status:</strong> {{ art.visibility }}</p>
-                        <button class="delete-button" @click.stop="deleteArtwork(art.id)">Delete</button>
-
                     </div>
 
                 </div>
