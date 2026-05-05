@@ -188,9 +188,9 @@ async deleteArtwork(id) {
 
             <div class="actions">
                 <div class="button-row">
-                    <button>Upload Artwork</button>
-                    <button>Export to CSV</button>
-                    <button>Export to JSON</button>
+                    <button @click="$emit('open-upload')">Upload Artwork</button>
+                    <button @click="exportDataToCsv()">Export to CSV</button>
+                    <button @click="exportDataToJson()">Export to JSON</button>
                 </div>
 
                 <input type="text" placeholder="Search artwork...">

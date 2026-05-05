@@ -60,6 +60,7 @@ createApp({
             this.currentPage = "edit"
         },
         openUpload(){
+            console.log("UPLOAD FUNCTION CALLED");
             this.currentPage = "upload";
         }
     }
