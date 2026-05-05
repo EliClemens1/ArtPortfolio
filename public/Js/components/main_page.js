@@ -187,12 +187,13 @@ async deleteArtwork(id) {
             <h2>Main Page</h2>
 
             <div class="actions">
-                <input type="text"
-                    placeholder="Search artwork..."
-                    v-model="filters.search">
-                <button @click="$emit('open-upload')">Upload Artwork</button>
-                <button @click="exportDataToCsv">Export to CSV</button>
-                <button @click="exportDataToJson">Export to JSON</button>
+                <div class="button-row">
+                    <button>Upload Artwork</button>
+                    <button>Export to CSV</button>
+                    <button>Export to JSON</button>
+                </div>
+
+                <input type="text" placeholder="Search artwork...">
             </div>
 
             <div class="artwork-list">
