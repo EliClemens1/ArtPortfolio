@@ -174,7 +174,8 @@ async deleteArtwork(id) {
                     art.longDescription?.toLowerCase().includes(search) ||
                     art.medium?.toLowerCase().includes(search) ||
                     art.category?.toLowerCase().includes(search) ||
-                    art.subject?.toLowerCase().includes(search)
+                    art.subject?.toLowerCase().includes(search) ||
+                    art.subject.toLowerCase().includes(status)
                 );
             });
         }
