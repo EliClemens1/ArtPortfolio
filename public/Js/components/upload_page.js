@@ -67,7 +67,7 @@ export default {
             </form>
         </div>
     `,
-    emits: ["back"],
+    emits: ["back", "upload-complete"],
 
     data() {
         return {
