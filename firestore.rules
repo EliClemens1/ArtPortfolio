@@ -12,6 +12,8 @@ service cloud.firestore {
           "artistportfolio15@gmail.com",
           "eli1clemens@gmail.com",
           "rick@rickclemens.art"
+          "clementoneart@gmail.com"
+
         ];
     }
 
