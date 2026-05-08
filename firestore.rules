@@ -11,7 +11,7 @@ service cloud.firestore {
           "eb0980835@otc.edu",
           "artistportfolio15@gmail.com",
           "eli1clemens@gmail.com",
-          "rick@rickclemens.art"
+          "rick@rickclemens.art",
           "clementoneart@gmail.com"
 
         ];
